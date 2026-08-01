@@ -27,15 +27,13 @@ def check_parity(received_binary):
     expected_parity = calculate_parity(data)
     return expected_parity == received_parity
 
-# --- Simulation ---
+
 messages = ["HELLO", "DATA", "NET", "CODE", "PACKET"]
 
 print("--- Parity Check Simulation ---")
 for msg in messages:
     print(f"\nOriginal Message: {msg}")
     encoded = text_to_binary_with_parity(msg)
-    
-    # Simulate transmission (corrupt ~100% for this test to show detection)
     received = introduce_noise(encoded) 
     
     if check_parity(received):
@@ -44,5 +42,3 @@ for msg in messages:
          print("Status: ERROR DETECTED (Parity mismatch)")
 
 print("\n--- Checksum vs Parity comparison ---")
-# For the README: Explain that parity only catches an ODD number of bit flips. 
-# If 2 bits flip, parity fails to detect it. Checksums are slightly more robust for larger blocks of data!
