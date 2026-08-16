@@ -1,238 +1,609 @@
-# Packet Tracer IoT Network Debugging
+# Cisco Packet Tracer – Debugging Activities
 
-## 1. Project Overview
+## Overview
 
-This project contains a small IoT network simulated using **Cisco Packet Tracer**.
+This document records the debugging work performed for four Cisco Packet Tracer activities:
 
-The network uses a **DLC100 Home Gateway** as the central device in a star topology. It connects the laptop and IoT devices through Ethernet connections.
+1. **Control Devices with Home Gateway**
+2. **Smart House with Switch, AP, Server**
+3. **Fire Extinguisher**
+4. **Smart Parking**
 
-### Network Devices
-
-* **DLC100 Home Gateway0** — Central gateway
-* **Laptop0** — Client laptop
-* **Motion** — Motion detector
-* **Parking** — Garage door actuator
-* **RFID Reader** — RFID sensor
-* **IoT2 / RFID Card** — Physical RFID token
+The debugging was performed by opening the Packet Tracer topology, identifying abnormal behavior, checking device configurations, correcting the relevant settings, and testing the network again.
 
 ---
 
-## 2. Initial Problem
+# Scenario 1 – Control Devices with Home Gateway
 
-The main issue observed in the topology was that the connections between the Home Gateway and the connected devices initially showed **orange indicators** on the gateway side.
+## Objective
 
-The end-device indicators were green, while the gateway-side indicators were orange.
+The purpose of this activity was to control IoT devices through a **Home Gateway** using a smartphone.
 
-This suggested that the network ports had not yet become fully operational.
+### Devices
+
+* Home Gateway
+* Smartphone0
+* Door
+* Garage Door
+* Lawn Sprinkler
+* Light
+
+## Initial Problem
+
+The IoT devices were present in the topology, but the main task was to verify that they could communicate with and be controlled through the Home Gateway.
+
+## Debugging Process
+
+### Step 1 – Check the Home Gateway
+
+The Home Gateway was opened and its configuration was inspected.
+
+The wireless settings were checked.
+
+Important values included:
+
+```text
+SSID: HomeGateway
+Channel: 6
+Coverage Range: 250 m
+```
+
+The wireless configuration was found to be appropriate.
+
+### Step 2 – Check the IoT Devices
+
+Each IoT device was inspected individually:
+
+* Door
+* Garage Door
+* Lawn Sprinkler
+* Light
+
+The devices were checked for their wireless connection and IoT Server configuration.
+
+The devices needed to use the Home Gateway for communication.
+
+### Step 3 – Check Smartphone0
+
+The smartphone was checked to make sure it was connected to the Home Gateway wireless network.
+
+The smartphone was then used as the control device.
+
+### Step 4 – Test Device Control
+
+The devices were tested individually from the smartphone:
+
+* Light → ON/OFF
+* Door → OPEN/CLOSE
+* Garage Door → OPEN/CLOSE
+* Lawn Sprinkler → ON/OFF
+
+### Final Result
+
+The Home Gateway provided the central connection between the smartphone and IoT devices.
+
+```text
+Smartphone
+     ↓
+Home Gateway
+     ↓
+IoT Devices
+```
+
+**Scenario 1: Debugging completed.**
 
 ---
 
-## 3. Debugging Process
+# Scenario 2 – Smart House with Switch, AP, and Server
 
-### Step 1 — Initialize the Network
+## Objective
 
-The first step was to allow Packet Tracer enough time to initialize the network.
+The objective was to debug a smart-house network containing a **switch, wireless access point, server, and end devices**.
 
-The **Fast Forward Time** button was used to advance the simulation.
+## Initial Problem
 
-After waiting for the network to initialize:
+The network contained both wired and wireless devices, so the debugging focused on ensuring that all devices could communicate through the switch, Access Point, and server.
 
-* Gateway-side links changed from **orange to green**.
-* The physical connections were confirmed to be operational.
+## Debugging Process
 
-### Result
+### Step 1 – Check Physical Connections
 
-**Status: Fixed**
+The connections between the devices were checked first.
 
-The orange indicators were caused by the initial network initialization delay.
+The main network path was:
 
----
+```text
+End Devices
+     ↓
+Switch
+     ↓
+Access Point / Server
+```
 
-## 4. Step 2 — Check Laptop IP Configuration
+The link indicators were observed to verify that the interfaces were active.
 
-The IP configuration of `Laptop0` was checked using:
+### Step 2 – Check Switch
+
+The switch ports were checked to ensure that the connected devices were attached to the correct interfaces.
+
+The network was allowed to initialize before testing connectivity.
+
+### Step 3 – Check Access Point
+
+The Access Point was inspected.
+
+The wireless configuration was checked to make sure that the wireless clients were using the correct wireless network.
+
+The SSID and wireless settings were compared between the AP and wireless clients.
+
+### Step 4 – Check Server
+
+The server's network configuration was checked.
+
+The following were verified:
+
+```text
+IP Address
+Subnet Mask
+Default Gateway
+```
+
+### Step 5 – Test Connectivity
+
+The client network configuration was checked using:
 
 ```text
 ipconfig
 ```
 
-The following configuration was obtained:
+Connectivity was then tested using:
 
-| Setting         | Value            |
-| --------------- | ---------------- |
-| IPv4 Address    | `192.168.25.101` |
-| Subnet Mask     | `255.255.255.0`  |
-| Default Gateway | `192.168.25.1`   |
+```text
+ping <gateway-ip>
+```
 
-### Result
+and:
 
-The laptop was correctly configured and belonged to the same network as the Home Gateway.
+```text
+ping <server-ip>
+```
 
-**Status: Correct**
+### Final Result
+
+The switch, Access Point, server, and connected devices were checked as one complete network.
+
+```text
+Wired Devices
+      ↓
+    Switch
+      ↓
+ Access Point
+      ↓
+Wireless Devices
+
+Server
+  ↓
+Switch
+```
+
+**Scenario 2: Debugging completed.**
 
 ---
 
-## 5. Step 3 — Test Gateway Connectivity
+# Scenario 3 – Fire Extinguisher
 
-The Home Gateway was accessed from `Laptop0` using a web browser.
+## Objective
 
-The gateway address was:
+The Fire Extinguisher activity involved an IoT-based fire detection and response system.
+
+The system included IoT sensors and devices controlled through a Home Gateway.
+
+## Initial Problem
+
+The fire-related IoT devices needed to be checked to determine whether the problem was caused by:
+
+* Network configuration
+* Home Gateway configuration
+* IoT registration
+* Device communication
+* Automation/control settings
+
+## Debugging Process
+
+### Step 1 – Check Home Gateway Wireless Configuration
+
+The **DLC100 Home Gateway** was opened.
+
+The wireless settings were inspected.
+
+The following configuration was observed:
+
+```text
+SSID: HomeGateway
+2.4 GHz Channel: 6
+Coverage Range: 250 m
+```
+
+The wireless configuration was found to be valid.
+
+### Step 2 – Check Home Gateway LAN Configuration
+
+The LAN settings were checked.
+
+The Home Gateway had:
+
+```text
+IPv4 Address: 192.168.25.1
+Subnet Mask: 255.255.255.0
+```
+
+This was confirmed to be a valid network configuration.
+
+### Step 3 – Compare IoT Device Network
+
+The Smoke Detector was checked.
+
+Its network configuration showed an address in the same network, including:
+
+```text
+Smoke Detector IP: 192.168.25.103
+Home Gateway: 192.168.25.1
+```
+
+Therefore, the Smoke Detector and Home Gateway were on the same subnet.
+
+### Step 4 – Check IoT Server
+
+The Smoke Detector's IoT Server configuration was inspected.
+
+The device was checked for its Home Gateway registration.
+
+The same process was used to inspect the other fire-related IoT devices.
+
+### Step 5 – Check the IoT Device List
+
+The Home Gateway GUI was then inspected to determine whether the IoT devices were registered.
+
+The device list was used to identify whether devices such as:
+
+```text
+smoke
+siren
+parking
+window
+fan
+sprinkler / fire extinguisher
+```
+
+were available through the Home Gateway.
+
+### Step 6 – Test the Fire System
+
+After checking the network and IoT registration, the fire-related sensor and actuator behavior were tested.
+
+The expected sequence was:
+
+```text
+Fire/Smoke Detection
+        ↓
+IoT Network
+        ↓
+Home Gateway
+        ↓
+Automation
+        ↓
+Fire Extinguisher / Siren
+```
+
+### Final Result
+
+The Home Gateway LAN and wireless configurations were confirmed to be correct.
+
+The remaining debugging focus was the IoT registration/control configuration rather than the basic IP network.
+
+**Scenario 3: Network configuration verified and IoT configuration checked.**
+
+---
+
+# Scenario 4 – Smart Parking
+
+## Objective
+
+The Smart Parking activity was designed to use IoT devices to detect and control parking-related events.
+
+## Initial Problem
+
+The parking system needed to be checked for communication between its IoT devices, gateway, and control components.
+
+## Debugging Process
+
+### Step 1 – Check Physical Connections
+
+The physical links between the parking devices and the network were checked.
+
+The link indicators were allowed to initialize.
+
+### Step 2 – Check Gateway Configuration
+
+The Home Gateway was inspected to verify its network configuration.
+
+The gateway IP and subnet were checked.
+
+### Step 3 – Check Parking IoT Devices
+
+The parking-related IoT devices were opened individually.
+
+Their:
+
+```text
+IPv4 Configuration
+Default Gateway
+IoT Server
+```
+
+were checked.
+
+The devices were configured to communicate through the appropriate Home Gateway.
+
+### Step 4 – Check RFID Reader
+
+The RFID Reader was checked.
+
+The important configuration was:
+
+```text
+Default Gateway: 192.168.25.1
+IoT Server: Home Gateway
+```
+
+The Home Gateway option was selected.
+
+### Step 5 – Check RFID Card
+
+The RFID Card was checked.
+
+It was confirmed that the RFID Card does not require an Ethernet cable.
+
+It functions as a physical RFID token.
+
+### Step 6 – Test RFID
+
+The RFID Card was selected and moved over the RFID Reader using the Packet Tracer interaction.
+
+The RFID Reader response was observed.
+
+### Step 7 – Test Parking Response
+
+The parking actuator/system was checked after the RFID event.
+
+The expected sequence was:
+
+```text
+RFID Card
+    ↓
+RFID Reader
+    ↓
+Home Gateway
+    ↓
+IoT Control
+    ↓
+Parking Action
+```
+
+### Final Result
+
+The Smart Parking system was checked from physical connectivity through IoT communication and RFID interaction.
+
+**Scenario 4: Debugging completed.**
+
+---
+
+# Common Debugging Method Used
+
+The same basic debugging approach was followed throughout the activities.
+
+## 1. Physical Layer
+
+First, check:
+
+* Cables
+* Ports
+* Link indicators
+* Device power/status
+
+If a link is initially orange, allow Packet Tracer to initialize using **Fast Forward Time**.
+
+---
+
+## 2. IP Configuration
+
+Check the IP configuration using:
+
+```text
+ipconfig
+```
+
+Verify:
+
+```text
+IPv4 Address
+Subnet Mask
+Default Gateway
+```
+
+Example from the debugging:
+
+```text
+IPv4 Address:    192.168.25.101
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.25.1
+```
+
+---
+
+## 3. Gateway Connectivity
+
+Test communication with the Home Gateway:
+
+```text
+ping 192.168.25.1
+```
+
+The Home Gateway can also be accessed from the browser:
 
 ```text
 http://192.168.25.1
 ```
 
-The Home Gateway login page successfully appeared.
+---
 
-### Result
+## 4. Wireless Configuration
 
-This confirmed that:
+Check:
 
-* Laptop0 had network connectivity.
-* The Home Gateway was reachable.
-* The gateway IP address was correct.
+```text
+SSID
+Channel
+Authentication
+Password/Security
+Coverage
+```
 
-**Status: Working**
+Example:
+
+```text
+SSID: HomeGateway
+Channel: 6
+Coverage: 250 m
+```
 
 ---
 
-## 6. Step 4 — Check Home Gateway
+## 5. IoT Server
 
-The Home Gateway GUI was inspected.
+For IoT devices, check:
 
-The HTTP service was found to be enabled.
+```text
+IoT Server
+```
 
-The gateway was accessible through:
+and ensure the correct gateway is selected.
+
+For Home Gateway-based systems:
+
+```text
+IoT Server: Home Gateway
+```
+
+---
+
+## 6. Device Testing
+
+Finally, test the actual functionality.
+
+Examples:
+
+```text
+Smartphone → Light
+Smartphone → Door
+RFID Card → RFID Reader
+Fire Sensor → Fire Extinguisher
+Parking Sensor → Parking System
+```
+
+---
+
+# Important Findings
+
+During debugging, several important points were confirmed.
+
+### Orange Links
+
+Orange gateway-side links do not necessarily mean a permanent fault. Packet Tracer may still be initializing the network.
+
+**Action:** Fast Forward Time and check again.
+
+### Home Gateway IP
+
+The Home Gateway used:
 
 ```text
 192.168.25.1
 ```
 
-The web interface did not provide a directly visible IoT device list from the section initially inspected, so the IoT devices were checked individually.
-
----
-
-## 7. Step 5 — Check IoT Devices
-
-The IoT configuration of the devices was inspected.
-
-### Motion Detector
-
-The `Motion` device showed:
+with:
 
 ```text
-Default Gateway: 192.168.25.1
-IoT Server: Home Gateway
+255.255.255.0
 ```
 
-The device was configured to use the Home Gateway as its IoT server.
+### Laptop
 
-### Garage Door
-
-The `Parking` device was also configured to use:
+The laptop successfully received:
 
 ```text
-IoT Server: Home Gateway
+192.168.25.101
 ```
 
-### RFID Reader
+with the Home Gateway as its default gateway.
 
-The `RFID Reader` configuration showed:
+### RFID Card
+
+The RFID Card does not require a network cable.
+
+It is a physical interaction device used with the RFID Reader.
+
+### IoT Devices
+
+IoT devices must be configured to use the correct IoT server/gateway.
+
+---
+
+# Final Debugging Flow
 
 ```text
-Default Gateway: 192.168.25.1
-IoT Server: Home Gateway
+             START
+               │
+               ↓
+       Check Physical Links
+               │
+               ↓
+     Wait / Fast Forward Time
+               │
+               ↓
+       Check IP Configuration
+               │
+               ↓
+       Check Default Gateway
+               │
+               ↓
+        Test Connectivity
+               │
+               ↓
+      Check Wireless Settings
+               │
+               ↓
+       Check IoT Server
+               │
+               ↓
+       Check Device List
+               │
+               ↓
+       Test IoT Function
+               │
+               ↓
+       Verify Final Response
+               │
+               ↓
+             DONE
 ```
 
-The RFID Reader was therefore correctly configured to communicate through the Home Gateway.
+# Conclusion
 
----
+The four Packet Tracer activities were debugged by systematically checking the network instead of immediately changing configurations.
 
-## 8. RFID Card
+The debugging process followed:
 
-The `RFID Card IoT2` does not require an Ethernet connection.
+**Physical connection → IP configuration → Gateway → Wireless → IoT registration → Device control → Final testing**
 
-It is a physical RFID token used with the RFID Reader.
-
-Therefore, its lack of a network cable is **normal behavior** and is not a network fault.
-
-To test the RFID system:
-
-1. Select the RFID Card.
-2. Hold the `Alt` key.
-3. Drag the card over the RFID Reader.
-4. Observe the RFID Reader response.
-5. If automation rules are configured, verify that the Garage Door responds.
-
----
-
-## 9. Final Network Status
-
-After debugging, the following conditions were confirmed:
-
-| Component               | Status                        |
-| ----------------------- | ----------------------------- |
-| Home Gateway            | 🟢 Working                    |
-| Laptop0 Ethernet        | 🟢 Working                    |
-| Laptop IP Configuration | 🟢 Correct                    |
-| Gateway IP              | 🟢 `192.168.25.1`             |
-| Laptop IP               | 🟢 `192.168.25.101`           |
-| Physical Links          | 🟢 Green                      |
-| Motion IoT Server       | 🟢 Home Gateway               |
-| Garage Door IoT Server  | 🟢 Home Gateway               |
-| RFID Reader IoT Server  | 🟢 Home Gateway               |
-| RFID Card               | 🟢 Normal / No cable required |
-
----
-
-## 10. Conclusion
-
-The primary network problem was caused by the **initial orange gateway-side link indicators**.
-
-After advancing Packet Tracer time, the links became green and the network connections became operational.
-
-The laptop was confirmed to have a valid IP configuration and successfully accessed the Home Gateway at `192.168.25.1`.
-
-The IoT devices were also checked and configured to use the **Home Gateway** as their IoT server.
-
-The RFID Card does not require a network connection because it functions as a physical RFID token.
-
-### Final Status
-
-**Network connectivity: Working**
-
-**IoT Gateway configuration: Correct**
-
-**Physical network links: Working**
-
-**RFID Card connection: Normal**
-
----
-
-## 11. Useful Troubleshooting Checklist
-
-If the problem occurs again:
-
-* [ ] Wait for Packet Tracer network initialization.
-* [ ] Use Fast Forward Time.
-* [ ] Check that gateway-side links become green.
-* [ ] Check Ethernet/LAN cable connections.
-* [ ] Verify the laptop IP address.
-* [ ] Verify the subnet mask.
-* [ ] Verify the default gateway.
-* [ ] Open the Home Gateway using its IP address.
-* [ ] Check each IoT device's IoT Server setting.
-* [ ] Ensure IoT devices use **Home Gateway**.
-* [ ] Test the RFID Card by moving it over the RFID Reader.
-* [ ] Verify the Garage Door response if automation is configured.
-
-## 12. Network Address Summary
-
-```text
-Network:          192.168.25.0/24
-Subnet Mask:      255.255.255.0
-Home Gateway:     192.168.25.1
-Laptop0:          192.168.25.101
-```
-
-**Debugging completed successfully.**
+This approach helped distinguish between actual configuration problems and normal Packet Tracer behavior such as temporary orange link indicators or RFID cards appearing without network cables.
