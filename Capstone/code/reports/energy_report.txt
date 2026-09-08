@@ -1,0 +1,20 @@
+============================================================
+ENERGY-SAVING VERIFICATION REPORT
+Smart Street Light Control Network — Capstone Review 1
+============================================================
+
+Node ID     OFF Hours / 24h     Est. Energy Saved   
+----------------------------------------------------
+NODE-01     12                  50.0%
+NODE-02     12                  50.0%
+NODE-03     12                  50.0%
+NODE-04     12                  50.0%
+NODE-05     12                  50.0%
+----------------------------------------------------
+
+Network-wide average energy saved: 50.0%
+Command delivery success rate:     100.0%
+Total commands captured:            10
+
+Interpretation: lights were automatically switched OFF during daylight hours (06:00-18:00), saving power for ~50% of the day compared to a baseline where lights stay on 24/7.
+============================================================
